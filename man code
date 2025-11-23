@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Store – Online Shop</title>
+  <title>Lyft'd – Online Shop</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -404,11 +403,45 @@
       color: var(--ink-dim);
     }
 
+    /* CATEGORY FILTER BAR */
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 2px 16px;
+    }
+
+    .category-pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,6,10,0.72);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      cursor: pointer;
+      transition: background var(--t-fast) ease-out, border-color var(--t-fast) ease-out, color var(--t-fast) ease-out, transform var(--t-fast) ease-out;
+    }
+
+    .category-pill--active {
+      background: rgba(255,122,60,0.22);
+      border-color: rgba(255,122,60,0.7);
+      color: #ffe1c5;
+      transform: translateY(-1px);
+    }
+
     /* PRODUCTS GRID */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 18px;
+    }
+
+    .products-empty {
+      font-size: 13px;
+      color: var(--ink-dim);
+      opacity: 0.85;
     }
 
     .product-card {
@@ -434,6 +467,7 @@
       background-size: cover;
       background-position: center;
       border-bottom: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
     }
 
     .product-tag {
@@ -465,6 +499,7 @@
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      cursor: pointer;
     }
 
     .product-desc {
@@ -496,6 +531,12 @@
       color: #7affc5;
     }
 
+    .product-strengths {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 4px;
+    }
+
     .product-actions {
       margin-top: 8px;
       display: flex;
@@ -523,7 +564,7 @@
       transform: translateY(-1px);
     }
 
-    .btn-buy {
+    .btn-details {
       padding: 7px 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.28);
@@ -534,7 +575,7 @@
       white-space: nowrap;
     }
 
-    .btn-buy:hover {
+    .btn-details:hover {
       background: rgba(10,12,22,0.9);
       transform: translateY(-1px);
     }
@@ -735,6 +776,186 @@
         display: none;
       }
     }
+
+    /* PRODUCT DETAIL MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 997;
+    }
+
+    .modal-overlay--open {
+      display: flex;
+    }
+
+    .product-modal {
+      width: min(480px, 100% - 32px);
+      background: #05060b;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.9);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 13px;
+    }
+
+    .product-modal-title {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .modal-close {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(5,6,10,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--ink-dim);
+    }
+
+    .product-modal-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+      gap: 14px;
+      padding: 12px 14px 14px;
+    }
+
+    @media (max-width: 640px) {
+      .product-modal-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .product-modal-image {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background-size: cover;
+      background-position: center;
+      min-height: 180px;
+    }
+
+    .product-modal-info {
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-modal-name {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .product-modal-desc {
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+
+    .product-modal-price {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .product-modal-strength-row {
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .product-modal-strength-row label {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .strength-select {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(5,6,10,0.96);
+      color: var(--ink);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .modal-qty-row {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-start;
+    }
+
+    .modal-qty-row span {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .modal-qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-qty {
+      min-width: 20px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .modal-footer {
+      margin-top: 8px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .modal-add-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #ff985d, #ff7a3c);
+      color: #1b100b;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+    }
+
+    .modal-secondary-btn {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(5,6,10,0.9);
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
   </style>
 </head>
 <body>
@@ -743,10 +964,10 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <div class="brand-mark">S</div>
+        <div class="brand-mark">L</div>
         <div class="brand-text">
-          <div class="brand-name">Your Store Name</div>
-          <div class="brand-tagline">Local shop · Now online</div>
+          <div class="brand-name">Lyft'd</div>
+          <div class="brand-tagline">Brick & mortar · Online</div>
         </div>
       </div>
       <div class="header-right">
@@ -781,10 +1002,51 @@
         </div>
         <button class="btn-checkout" id="checkoutBtn">Checkout</button>
         <div class="checkout-note">
-          Secure checkout will happen on our payment page (Stripe / Square). Taxes & shipping calculated at checkout.
+          Secure checkout will happen on our payment page. Taxes & shipping calculated at checkout.
         </div>
       </div>
     </aside>
+  </div>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div class="modal-overlay" id="productModalOverlay">
+    <div class="product-modal">
+      <div class="product-modal-header">
+        <div class="product-modal-title">Product detail</div>
+        <button class="modal-close" id="productModalClose">×</button>
+      </div>
+      <div class="product-modal-body">
+        <div class="product-modal-image" id="productModalImage"></div>
+        <div class="product-modal-info">
+          <div class="product-modal-name" id="productModalName"></div>
+          <div class="product-modal-desc" id="productModalDesc"></div>
+          <div class="product-modal-price" id="productModalPrice"></div>
+
+          <div class="product-modal-strength-row">
+            <label for="strengthSelect">Nicotine strength</label>
+            <select id="strengthSelect" class="strength-select">
+              <option value="3mg" selected>3 mg</option>
+              <option value="6mg">6 mg</option>
+              <option value="0mg">0 mg</option>
+            </select>
+          </div>
+
+          <div class="modal-qty-row">
+            <span>Quantity</span>
+            <div class="modal-qty-controls">
+              <button class="qty-btn" id="modalQtyDecrease">−</button>
+              <span class="modal-qty" id="modalQty">1</span>
+              <button class="qty-btn" id="modalQtyIncrease">+</button>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="modal-add-btn" id="modalAddToCart">Add to cart</button>
+            <button class="modal-secondary-btn" id="modalViewPolicies">View store policies</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PAGE -->
@@ -793,14 +1055,15 @@
     <section class="hero">
       <div>
         <h1 class="hero-title">
-          Bring Your <span class="hero-highlight">Favorite Items</span> Home with One Click.
+          Your Favorite <span class="hero-highlight">E-Juice</span> From Lyft'd, Now Online.
         </h1>
         <p class="hero-body">
-          Shop your brick-and-mortar favorites online. Same products, same local team, now with fast and secure checkout from wherever you are.
+          Shop our in-store lineup from anywhere. Same bottles, same crew—now with online ordering,
+          in-store pickup, and fast shipping.
         </p>
         <div class="hero-pills">
           <div class="pill pill--accent">Local Pickup</div>
-          <div class="pill">Secure Payments</div>
+          <div class="pill">Secure Checkout</div>
           <div class="pill">Fast Processing</div>
         </div>
         <div class="hero-cta">
@@ -817,7 +1080,7 @@
         <div class="hero-photo">
           <div class="hero-photo-badge">
             <span class="dot"></span>
-            <span>Open for online orders</span>
+            <span>Online orders: Open</span>
           </div>
         </div>
         <div class="hero-meta">
@@ -826,37 +1089,50 @@
             <span>Order ahead, pickup in-store, or ship to your door.</span>
           </div>
           <div>
-            <strong>Today’s pickup</strong><br />
+            <strong>Same-day pickup</strong><br />
             <span>Order by 4PM for same-day pickup*</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PRODUCTS -->
+    <!-- SHOP -->
     <section id="shop">
       <div class="section-header">
         <div>
           <div class="section-title">Shop</div>
-          <div class="section-subtitle">Featured items from your store</div>
+          <div class="section-subtitle">
+            Browse by category. E-juice is live now; devices, coils, disposables & accessories are rolling out next.
+          </div>
         </div>
       </div>
+
+      <!-- CATEGORY FILTERS -->
+      <div class="category-filter" id="categoryFilter">
+        <button class="category-pill category-pill--active" data-category="all">All</button>
+        <button class="category-pill" data-category="e-juice">E-Juice</button>
+        <button class="category-pill" data-category="device">Devices</button>
+        <button class="category-pill" data-category="coil">Coils</button>
+        <button class="category-pill" data-category="disposable">Disposables</button>
+        <button class="category-pill" data-category="accessory">Accessories</button>
+      </div>
+
       <div class="products-grid" id="productsGrid">
         <!-- JS will inject product cards here -->
       </div>
     </section>
 
-    <!-- ABOUT + CONTACT (simple placeholders for now) -->
+    <!-- ABOUT + CONTACT -->
     <section id="about" style="margin-top:32px;">
       <div class="section-header">
         <div>
           <div class="section-title">About</div>
-          <div class="section-subtitle">Your brick & mortar story</div>
+          <div class="section-subtitle">The Lyft'd shop story</div>
         </div>
       </div>
       <p style="font-size:13px; color:var(--ink-dim); max-width:46rem;">
-        This is where we’ll add your real-world story: how your shop started, what you sell, and what makes your local business unique.
-        We can customize this section with photos, hours, and a short origin story.
+        This is where we’ll add your real-world story: how Lyft'd started, what you carry in-store, and what makes your
+        shop different. We can customize this with photos, hours, and your origin story.
       </p>
     </section>
 
@@ -868,7 +1144,7 @@
         </div>
       </div>
       <p style="font-size:13px; color:var(--ink-dim); max-width:46rem; margin-bottom:10px;">
-        Add your physical address, phone number, and hours here. We can also embed a Google Map and a simple contact form in the next iteration.
+        Add your physical address, phone number, and hours here. We can also embed a Google Map and a simple contact form.
       </p>
       <p style="font-size:13px; color:var(--ink-dim);">
         Example: 123 Main Street, Your City, ST 29926 · (555) 555-5555
@@ -877,54 +1153,125 @@
 
     <!-- FOOTER -->
     <footer class="site-footer">
-      <span>© <span id="year"></span> Your Store Name. All rights reserved.</span>
-      <span><a href="#">Store policies</a> · <a href="#">Shipping & returns</a></span>
+      <span>© <span id="year"></span> Lyft'd. All rights reserved.</span>
+      <span><a href="#contact">Visit us</a> · <a href="#">Store policies</a></span>
     </footer>
   </main>
 
   <script>
-    // ---- BASIC PRODUCT DATA (edit this for your real items) ----
+    // ---- PRODUCT DATA ----
+    // E-Juice line is live; other categories can be filled in later.
     const products = [
       {
-        id: 'prod-1',
-        name: 'Signature Hoodie',
-        desc: 'Soft, heavyweight hoodie with your shop logo.',
-        price: 59.99,
-        tag: 'New',
+        id: 'ejuice-strawgurt',
+        category: 'e-juice',
+        name: 'Strawgurt',
+        desc: 'Creamy strawberry yogurt blend with a smooth finish.',
+        price: 19.99,
+        tag: 'Fruit & Cream',
         stock: 'In stock',
-        image: 'https://images.pexels.com/photos/7671166/pexels-photo-7671166.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        buyLink: '#checkout-hoodie' // later: replace with real Stripe/Square/Shopify link
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-strawgurt.png',
+        buyLink: '#checkout-strawgurt'
       },
       {
-        id: 'prod-2',
-        name: 'Premium T-Shirt',
-        desc: 'Everyday tee, ultra soft cotton blend.',
-        price: 29.99,
-        tag: 'Best seller',
+        id: 'ejuice-strawberry-kiwi-tea',
+        category: 'e-juice',
+        name: 'Strawberry Kiwi Tea',
+        desc: 'Iced tea layered with sweet strawberry and tart kiwi.',
+        price: 19.99,
+        tag: 'Tea Series',
         stock: 'In stock',
-        image: 'https://images.pexels.com/photos/7671214/pexels-photo-7671214.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        buyLink: '#checkout-shirt'
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-strawberry-kiwi-tea.png',
+        buyLink: '#checkout-strawberry-kiwi-tea'
       },
       {
-        id: 'prod-3',
-        name: 'Gift Card',
-        desc: 'Let them choose their favorite items.',
-        price: 50.00,
-        tag: 'Great gift',
-        stock: 'Digital delivery',
-        image: 'https://images.pexels.com/photos/1888009/pexels-photo-1888009.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        buyLink: '#checkout-giftcard'
+        id: 'ejuice-sirius-blue',
+        category: 'e-juice',
+        name: 'Sirius Blue',
+        desc: 'Bold blue raspberry candy with a bright, sweet bite.',
+        price: 19.99,
+        tag: 'Candy',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-sirius-blue.png',
+        buyLink: '#checkout-sirius-blue'
       },
       {
-        id: 'prod-4',
-        name: 'Limited Edition Item',
-        desc: 'Small batch, exclusive to your store.',
-        price: 79.00,
-        tag: 'Limited',
-        stock: 'Low stock',
-        image: 'https://images.pexels.com/photos/298864/pexels-photo-298864.jpeg?auto=compress&cs=tinysrgb&w=1200',
-        buyLink: '#checkout-limited'
+        id: 'ejuice-raspberry-crush',
+        category: 'e-juice',
+        name: 'Raspberry Crush',
+        desc: 'Juicy red raspberries with a light candy twist.',
+        price: 19.99,
+        tag: 'Fruit',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-raspberry-crush.png',
+        buyLink: '#checkout-raspberry-crush'
+      },
+      {
+        id: 'ejuice-mellow-martian',
+        category: 'e-juice',
+        name: 'Mellow Martian',
+        desc: 'Banana, strawberry and marshmallow for a cosmic dessert blend.',
+        price: 19.99,
+        tag: 'Dessert',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-mellow-martian.png',
+        buyLink: '#checkout-mellow-martian'
+      },
+      {
+        id: 'ejuice-martian-blood',
+        category: 'e-juice',
+        name: 'Martian Blood',
+        desc: 'A bold, sweet strawberry profile that stands out in the lineup.',
+        price: 19.99,
+        tag: 'Fruit',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-martian-blood.png',
+        buyLink: '#checkout-martian-blood'
+      },
+      {
+        id: 'ejuice-gentlemens-club',
+        category: 'e-juice',
+        name: "Gentlemen's Club",
+        desc: 'Vanilla custard tobacco crafted for a rich, refined experience.',
+        price: 21.99,
+        tag: 'Tobacco',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-gentlemens-club.png',
+        buyLink: '#checkout-gentlemens-club'
+      },
+      {
+        id: 'ejuice-earl-grey-tea',
+        category: 'e-juice',
+        name: 'Earl Grey Tea',
+        desc: 'Classic Earl Grey tea with smooth, aromatic citrus notes.',
+        price: 19.99,
+        tag: 'Tea Series',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-earl-grey-tea.png',
+        buyLink: '#checkout-earl-grey-tea'
+      },
+      {
+        id: 'ejuice-absolute-zero',
+        category: 'e-juice',
+        name: 'Absolute Zero',
+        desc: 'An ultra-cold menthol blend with a chilling finish.',
+        price: 19.99,
+        tag: 'Menthol',
+        stock: 'In stock',
+        strengths: ['0mg', '3mg', '6mg'],
+        image: 'images:ejuice-absolute-zero.png',
+        buyLink: '#checkout-absolute-zero'
       }
+
+      // Later: add devices/coils/disposables/accessories with category: 'device', 'coil', etc.
     ];
 
     const productsGrid = document.getElementById('productsGrid');
@@ -935,56 +1282,114 @@
     const cartItemsEl = document.getElementById('cartItems');
     const cartSubtotalEl = document.getElementById('cartSubtotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    const productModalOverlay = document.getElementById('productModalOverlay');
+    const productModalClose = document.getElementById('productModalClose');
+    const productModalImage = document.getElementById('productModalImage');
+    const productModalName = document.getElementById('productModalName');
+    const productModalDesc = document.getElementById('productModalDesc');
+    const productModalPrice = document.getElementById('productModalPrice');
+    const strengthSelect = document.getElementById('strengthSelect');
+    const modalQtyEl = document.getElementById('modalQty');
+    const modalQtyDecrease = document.getElementById('modalQtyDecrease');
+    const modalQtyIncrease = document.getElementById('modalQtyIncrease');
+    const modalAddToCart = document.getElementById('modalAddToCart');
+    const modalViewPolicies = document.getElementById('modalViewPolicies');
 
     let cart = [];
+    let activeCategory = 'all';
+    let modalProduct = null;
+    let modalQty = 1;
 
     function renderProducts() {
       productsGrid.innerHTML = '';
-      products.forEach((p) => {
+
+      const visibleProducts = products.filter(p => {
+        if (activeCategory === 'all') return true;
+        return p.category === activeCategory;
+      });
+
+      if (visibleProducts.length === 0) {
+        const msg = document.createElement('div');
+        msg.className = 'products-empty';
+        msg.textContent = 'Products for this category are coming soon. Check back or browse another category.';
+        productsGrid.appendChild(msg);
+        return;
+      }
+
+      visibleProducts.forEach((p) => {
         const card = document.createElement('article');
         card.className = 'product-card';
 
+        const strengthsText = p.strengths && p.strengths.length
+          ? `Strengths: ${p.strengths.join(' / ')}`
+          : '';
+
         card.innerHTML = `
-          <div class="product-image" style="background-image:url('${p.image}')">
+          <div class="product-image" style="background-image:url('${p.image}')" data-id="${p.id}">
             <div class="product-tag">${p.tag}</div>
           </div>
           <div class="product-body">
-            <div class="product-name">${p.name}</div>
+            <div class="product-name" data-id="${p.id}">${p.name}</div>
             <div class="product-desc">${p.desc}</div>
             <div class="product-meta-row">
               <div class="product-price">$${p.price.toFixed(2)} <span>USD</span></div>
               <div class="product-stock">${p.stock}</div>
             </div>
+            <div class="product-strengths">${strengthsText}</div>
             <div class="product-actions">
               <button class="btn-add" data-id="${p.id}">
                 <span>+</span> Add to cart
               </button>
-              <a href="${p.buyLink}" class="btn-buy">Buy now</a>
+              <button class="btn-details" data-id="${p.id}">
+                View details
+              </button>
             </div>
           </div>
         `;
         productsGrid.appendChild(card);
       });
 
-      // Attach listeners for Add to cart
-      document.querySelectorAll('.btn-add').forEach(btn => {
+      // Add listeners: add to cart, open modal from image/name/details
+      productsGrid.querySelectorAll('.btn-add').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
-          addToCart(id);
+          addToCart(id, 1, '3mg'); // default strength from quick add
+        });
+      });
+
+      ['.product-image', '.product-name', '.btn-details'].forEach(selector => {
+        productsGrid.querySelectorAll(selector).forEach(el => {
+          el.addEventListener('click', () => {
+            const id = el.getAttribute('data-id');
+            openProductModal(id);
+          });
         });
       });
     }
 
-    function addToCart(productId) {
-      const existing = cart.find(item => item.id === productId);
-      if (existing) {
-        existing.qty += 1;
+    function addToCart(productId, qty, strength) {
+      const quantity = qty && qty > 0 ? qty : 1;
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+
+      const key = productId + '::' + (strength || '3mg');
+      let item = cart.find(i => i.key === key);
+      if (item) {
+        item.qty += quantity;
       } else {
-        const product = products.find(p => p.id === productId);
-        if (product) {
-          cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
-        }
+        item = {
+          key,
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          qty: quantity,
+          strength: strength || '3mg'
+        };
+        cart.push(item);
       }
+
       updateCartUI();
       openCart();
     }
@@ -1008,48 +1413,47 @@
         row.innerHTML = `
           <div>
             <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-meta">$${item.price.toFixed(2)} each</div>
+            <div class="cart-item-meta">$${item.price.toFixed(2)} · ${item.strength}</div>
           </div>
           <div class="cart-item-actions">
-            <button class="qty-btn" data-id="${item.id}" data-action="decrease">−</button>
+            <button class="qty-btn" data-key="${item.key}" data-action="decrease">−</button>
             <span class="qty">${item.qty}</span>
-            <button class="qty-btn" data-id="${item.id}" data-action="increase">+</button>
-            <button class="cart-remove" data-id="${item.id}">Remove</button>
+            <button class="qty-btn" data-key="${item.key}" data-action="increase">+</button>
+            <button class="cart-remove" data-key="${item.key}">Remove</button>
           </div>
         `;
         cartItemsEl.appendChild(row);
       });
 
-      // Bind qty + remove actions
       cartItemsEl.querySelectorAll('.qty-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
+          const key = btn.getAttribute('data-key');
           const action = btn.getAttribute('data-action');
-          if (action === 'increase') changeQty(id, 1);
-          if (action === 'decrease') changeQty(id, -1);
+          if (action === 'increase') changeQty(key, 1);
+          if (action === 'decrease') changeQty(key, -1);
         });
       });
 
       cartItemsEl.querySelectorAll('.cart-remove').forEach(btn => {
         btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
-          removeItem(id);
+          const key = btn.getAttribute('data-key');
+          removeItem(key);
         });
       });
     }
 
-    function changeQty(id, delta) {
-      const item = cart.find(i => i.id === id);
+    function changeQty(key, delta) {
+      const item = cart.find(i => i.key === key);
       if (!item) return;
       item.qty += delta;
       if (item.qty <= 0) {
-        cart = cart.filter(i => i.id !== id);
+        cart = cart.filter(i => i.key !== key);
       }
       updateCartUI();
     }
 
-    function removeItem(id) {
-      cart = cart.filter(i => i.id !== id);
+    function removeItem(key) {
+      cart = cart.filter(i => i.key !== key);
       updateCartUI();
     }
 
@@ -1061,7 +1465,75 @@
       cartOverlay.classList.remove('cart-overlay--open');
     }
 
-    // Basic event bindings
+    // CATEGORY FILTER HANDLING
+    categoryFilter.querySelectorAll('.category-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        categoryFilter.querySelectorAll('.category-pill').forEach(p => p.classList.remove('category-pill--active'));
+        pill.classList.add('category-pill--active');
+        activeCategory = pill.getAttribute('data-category');
+        renderProducts();
+      });
+    });
+
+    // PRODUCT MODAL
+    function openProductModal(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      modalProduct = product;
+      modalQty = 1;
+      modalQtyEl.textContent = modalQty;
+
+      productModalImage.style.backgroundImage = `url('${product.image}')`;
+      productModalName.textContent = product.name;
+      productModalDesc.textContent = product.desc;
+      productModalPrice.textContent = `$${product.price.toFixed(2)} USD`;
+
+      // default to 3mg if available
+      if (product.strengths && product.strengths.includes('3mg')) {
+        strengthSelect.value = '3mg';
+      } else {
+        strengthSelect.value = product.strengths ? product.strengths[0] : '3mg';
+      }
+
+      productModalOverlay.classList.add('modal-overlay--open');
+    }
+
+    function closeProductModal() {
+      productModalOverlay.classList.remove('modal-overlay--open');
+      modalProduct = null;
+    }
+
+    productModalClose.addEventListener('click', closeProductModal);
+    productModalOverlay.addEventListener('click', (e) => {
+      if (e.target === productModalOverlay) closeProductModal();
+    });
+
+    modalQtyDecrease.addEventListener('click', () => {
+      if (modalQty > 1) {
+        modalQty -= 1;
+        modalQtyEl.textContent = modalQty;
+      }
+    });
+
+    modalQtyIncrease.addEventListener('click', () => {
+      modalQty += 1;
+      modalQtyEl.textContent = modalQty;
+    });
+
+    modalAddToCart.addEventListener('click', () => {
+      if (!modalProduct) return;
+      const strength = strengthSelect.value || '3mg';
+      addToCart(modalProduct.id, modalQty, strength);
+      closeProductModal();
+    });
+
+    modalViewPolicies.addEventListener('click', () => {
+      // Simple scroll to footer / policies for now
+      const footer = document.querySelector('.site-footer');
+      if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Basic event bindings for cart
     openCartBtn.addEventListener('click', openCart);
     closeCartBtn.addEventListener('click', closeCart);
     cartOverlay.addEventListener('click', (e) => {
@@ -1069,17 +1541,14 @@
     });
 
     checkoutBtn.addEventListener('click', () => {
-      // Later: redirect to your actual checkout URL
-      // For now, just log and show an alert
       if (cart.length === 0) {
         alert('Your cart is empty.');
         return;
       }
-      alert('In production, this button would send you to Stripe/Square/Shopify checkout with your cart items.');
-      // window.location.href = 'https://your-real-checkout-link.com';
+      alert('In production, this button would send you to your secure checkout (Stripe / Square / Shopify) with your cart items.');
     });
 
-    // Set footer year
+    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Initial render
